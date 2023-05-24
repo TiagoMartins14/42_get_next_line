@@ -6,7 +6,7 @@
 /*   By: tiaferna <tiaferna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/29 17:55:22 by tiaferna          #+#    #+#             */
-/*   Updated: 2023/05/24 19:53:59 by tiaferna         ###   ########.fr       */
+/*   Updated: 2023/05/24 20:31:47 by tiaferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,6 +125,8 @@ char	*get_next_line(int fd)
 	char		*line;
 	int			read_val;
 
+	if (BUFFER_SIZE <= 0 || fd < 0)
+		return (NULL);
 	if (stash != NULL && check_break(stash) == 1)
 	{
 		line = ft_strdup_break(stash);
@@ -151,14 +153,14 @@ char	*get_next_line(int fd)
 	return(NULL);
 }
 
-int main()
+/* int main()
 {
 	int i = 0;
 	int fd = open("test.txt", O_RDONLY);
-	while (i++ < 3)
+	while (i++ < 5)
 		printf("%s", get_next_line(fd));
 	close(fd);
-}
+} */
 
 //buff negativo ou == 0
 //fd negativo
