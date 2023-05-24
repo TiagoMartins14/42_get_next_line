@@ -6,7 +6,7 @@
 /*   By: tiaferna <tiaferna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/29 17:55:22 by tiaferna          #+#    #+#             */
-/*   Updated: 2023/05/18 14:20:47 by tiaferna         ###   ########.fr       */
+/*   Updated: 2023/05/24 19:53:59 by tiaferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,9 @@ int	check_break(char *str)
 	i = 0;
 	while (str[i])
 	{
-		if (str[i] == '\n');
-		return (1);
+		if (str[i] == '\n')
+			return (1);
+		i++;
 	}
 	return (0);
 }
@@ -45,9 +46,14 @@ char	*ft_strjoin(char *s1, char *s2)
 
 	i = 0;
 	j = 0;
-	newstr = malloc(ft_strlen(s1) + ft_strlen(s2) + 1);
+	newstr = malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2)) + 1);
 	if (newstr != NULL)
 	{
+		if (!s1)
+		{
+			s1 = malloc(sizeof(char) + 1);
+			s1[0] = '\0';
+		}
 		while (s1[i])
 		{
 			newstr[i] = s1[i];
@@ -61,6 +67,7 @@ char	*ft_strjoin(char *s1, char *s2)
 		}
 		newstr[i] = '\0';
 	}
+	free(s1);
 	return (newstr);
 }
 
@@ -73,7 +80,7 @@ char	*ft_strdup_break(const char *s)
 	while (s[i] != '\n')
 		i++;
 	i++;
-	s_dup = malloc(i + 1);
+	s_dup = malloc(sizeof(char) * i + 1);
 	if (!s_dup)
 		return (NULL);
 	i = 0;
@@ -87,33 +94,71 @@ char	*ft_strdup_break(const char *s)
 	return (s_dup);
 }
 
+char	*refresh_stash(char *stash)
+{
+	char	*new_stash;
+	int		i;
+	int		j;
+
+	i = 0;
+	while (stash[i] != '\n')
+		i++;
+	j = i;
+	while (stash[j])
+		j++;
+	new_stash = malloc(sizeof(char) * (j - i) + 1);
+	if (!new_stash)
+		return (NULL);
+	j = 0;
+	while (stash[i])
+		new_stash[j++] = stash[++i];
+	new_stash[j] = '\0';
+	return (new_stash);
+}
+
+
+
 char	*get_next_line(int fd)
 {
-	static char	stash[1000];
-	char		buff[BUFFER_SIZE + 1];
+	static char	*stash;
+	char		*buff;
 	char		*line;
 	int			read_val;
-	int			i;
 
-	read_val = read(fd, buff, BUFFER_SIZE + 1);
-	if (read_val > 0)
+	if (stash != NULL && check_break(stash) == 1)
 	{
-		i = ft_strlen(stash);
+		line = ft_strdup_break(stash);
+		stash = refresh_stash(stash);
+		return (line);
+	}
+	buff = malloc(sizeof(char) * BUFFER_SIZE + 1);
+	if (!buff)
+		return (NULL);
+	read_val = read(fd, buff, BUFFER_SIZE);
+	while (read_val > 0)
+	{
 		stash = ft_strjoin(stash, buff);
-		if (check_break(stash) != 0)
+		if (check_break(stash) == 1)
 			{
 				line = ft_strdup_break(stash);
+				stash = refresh_stash(stash);
+				free(buff);
 				return (line);
 			}
-		else
-			return (stash);
+		read_val = read(fd, buff, BUFFER_SIZE);
 	}
-	else
-		write(1, "End of file reached", 20);
+	free(buff);
+	return(NULL);
 }
 
 int main()
 {
+	int i = 0;
 	int fd = open("test.txt", O_RDONLY);
-	get_next_line(fd);
+	while (i++ < 3)
+		printf("%s", get_next_line(fd));
+	close(fd);
 }
+
+//buff negativo ou == 0
+//fd negativo
