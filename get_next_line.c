@@ -6,7 +6,7 @@
 /*   By: tiaferna <tiaferna@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/29 17:55:22 by tiaferna          #+#    #+#             */
-/*   Updated: 2023/05/24 20:31:47 by tiaferna         ###   ########.fr       */
+/*   Updated: 2023/05/25 13:10:33 by tiaferna         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,19 @@ int	check_break(char *str)
 		if (str[i] == '\n')
 			return (1);
 		i++;
+	}
+	return (0);
+}
+
+int	check_end_file(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (i < BUFFER_SIZE)
+	{
+		if (str[i++] == '\0')
+			return (1);
 	}
 	return (0);
 }
@@ -46,7 +59,7 @@ char	*ft_strjoin(char *s1, char *s2)
 
 	i = 0;
 	j = 0;
-	newstr = malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2)) + 1);
+	newstr = malloc(sizeof(char) * (ft_strlen(s1) + BUFFER_SIZE) + 1);
 	if (newstr != NULL)
 	{
 		if (!s1)
@@ -59,7 +72,7 @@ char	*ft_strjoin(char *s1, char *s2)
 			newstr[i] = s1[i];
 			i++;
 		}
-		while (s2[j])
+		while (j < BUFFER_SIZE)
 		{
 			newstr[i] = s2[j];
 			i++;
@@ -116,7 +129,22 @@ char	*refresh_stash(char *stash)
 	return (new_stash);
 }
 
+void	*ft_memset(void *s, int c, size_t n)
+{
+	unsigned char	*p;
+	unsigned char	v;
+	size_t			i;
 
+	p = (unsigned char *)s;
+	v = (unsigned char)c;
+	i = 0;
+	while (i < n)
+	{
+		*(p + i) = v;
+		i++;
+	}
+	return (s);
+}
 
 char	*get_next_line(int fd)
 {
@@ -136,31 +164,35 @@ char	*get_next_line(int fd)
 	buff = malloc(sizeof(char) * BUFFER_SIZE + 1);
 	if (!buff)
 		return (NULL);
+	ft_memset(buff, '\0', BUFFER_SIZE);
 	read_val = read(fd, buff, BUFFER_SIZE);
 	while (read_val > 0)
 	{
-		stash = ft_strjoin(stash, buff);
-		if (check_break(stash) == 1)
-			{
-				line = ft_strdup_break(stash);
-				stash = refresh_stash(stash);
-				free(buff);
-				return (line);
-			}
+		if (check_break(buff) == 1)
+		{
+			stash = ft_strjoin(stash, buff);
+			line = ft_strdup_break(stash);
+			stash = refresh_stash(stash);
+			free(buff);
+			return (line);
+		}
+		else if (check_end_file(buff) == 1)
+		{
+			line = ft_strjoin(stash, buff);
+			free(buff);
+			return (line);
+		}
 		read_val = read(fd, buff, BUFFER_SIZE);
 	}
 	free(buff);
-	return(NULL);
+	return(stash);
 }
 
-/* int main()
+int main()
 {
 	int i = 0;
 	int fd = open("test.txt", O_RDONLY);
 	while (i++ < 5)
 		printf("%s", get_next_line(fd));
 	close(fd);
-} */
-
-//buff negativo ou == 0
-//fd negativo
+}

@@ -1,5 +1,2 @@
-Frase aleatoria
-Estou
-a
-estudar
-na 42.
+Uma frase
+simples.
