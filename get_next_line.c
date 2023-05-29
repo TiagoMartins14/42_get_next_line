@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tiaferna <tiaferna@student.42.fr>          +#+  +:+       +#+        */
+/*   By: patatoss <patatoss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/04/29 17:55:22 by tiaferna          #+#    #+#             */
-/*   Updated: 2023/05/25 13:10:33 by tiaferna         ###   ########.fr       */
+/*   Created: 2023/05/13 17:58:28 by patatoss          #+#    #+#             */
+/*   Updated: 2023/05/27 22:29:59 by patatoss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -182,17 +182,19 @@ char	*get_next_line(int fd)
 			free(buff);
 			return (line);
 		}
+		else
+			stash = ft_strjoin(stash, buff);
 		read_val = read(fd, buff, BUFFER_SIZE);
 	}
 	free(buff);
 	return(stash);
 }
 
-int main()
+/* int main()
 {
 	int i = 0;
 	int fd = open("test.txt", O_RDONLY);
 	while (i++ < 5)
 		printf("%s", get_next_line(fd));
 	close(fd);
-}
+} */

@@ -3,24 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tiaferna <tiaferna@student.42.fr>          +#+  +:+       +#+        */
+/*   By: patatoss <patatoss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/24 20:31:23 by tiaferna          #+#    #+#             */
-/*   Updated: 2023/05/25 12:19:12 by tiaferna         ###   ########.fr       */
+/*   Created: 2023/05/22 10:49:51 by patatoss          #+#    #+#             */
+/*   Updated: 2023/05/22 10:49:52 by patatoss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
-
-int	check_end_file(char *str)
-{
-	int	i;
-
-	i = 0;
-	while (i < 16)
-	{
-		if (str[i++] == '\0')
-			return (1);
-	}
-	return (0);
-}
