@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: patatoss <patatoss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/13 17:58:28 by patatoss          #+#    #+#             */
-/*   Updated: 2023/06/03 10:25:11 by patatoss         ###   ########.fr       */
+/*   Created: 2023/06/05 09:21:46 by patatoss          #+#    #+#             */
+/*   Updated: 2023/06/05 09:47:46 by patatoss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 char	*get_text(int fd, char *stash)
 {
@@ -39,15 +39,15 @@ char	*get_text(int fd, char *stash)
 
 char	*get_next_line(int fd)
 {
-	static char	*stash;
+	static char	*stash[FOPEN_MAX];
 	char		*line;
 
-	if (fd < 0 || BUFFER_SIZE <= 0)
+	if (fd < 0 || BUFFER_SIZE <= 0 || fd > FOPEN_MAX)
 		return (NULL);
-	stash = get_text(fd, stash);
-	if (!stash)
+	stash[fd] = get_text(fd, stash[fd]);
+	if (!stash[fd])
 		return (NULL);
-	line = ft_strdup_break(stash);
-	stash = refresh_stash(stash);
+	line = ft_strdup_break(stash[fd]);
+	stash[fd] = refresh_stash(stash[fd]);
 	return (line);
 }

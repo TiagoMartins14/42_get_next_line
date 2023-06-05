@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line_utils.c                              :+:      :+:    :+:   */
+/*   get_next_line_utils_bonus.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: patatoss <patatoss@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/22 10:49:51 by patatoss          #+#    #+#             */
-/*   Updated: 2023/06/03 10:25:30 by patatoss         ###   ########.fr       */
+/*   Created: 2023/06/05 09:22:10 by patatoss          #+#    #+#             */
+/*   Updated: 2023/06/05 09:40:27 by patatoss         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 int	ft_strlen(char *str)
 {
