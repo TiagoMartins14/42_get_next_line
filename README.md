@@ -1,7 +1,7 @@
 # 42_ft_printf
 Project developed during the Common Core @ 42 Porto
 
-## Libft
+## ft_printf
 Reading a line from a fd is way too tedious
 
 ### Summary:
