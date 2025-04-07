@@ -22,13 +22,13 @@ To compile the library, go to its path and run:
 For all mandatory functions:
 
 ```shell
-$ make
+$> make
 ```
 
 For bonus functions:
 
 ```shell
-$ make bonus
+$> make bonus
 ```
 
 **2. Using it in your code**
