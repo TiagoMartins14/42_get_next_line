@@ -1,7 +1,7 @@
-# 42_ft_printf
+# 42_get_next_line
 Project developed during the Common Core @ 42 Porto
 
-## ft_printf
+## get_next_line
 Reading a line from a fd is way too tedious
 
 ### Summary:
